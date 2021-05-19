@@ -1,7 +1,11 @@
+# ######### AWS PROVIDER ######### 
 provider "aws" {
   region = "us-east-2"
 }
 
+
+
+# ######### EC2 INSTANCE ######### 
 
 resource "aws_security_group" "my-sg" {
   name = "security_group"
@@ -16,7 +20,7 @@ resource "aws_security_group" "my-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # add specific IP here to whitelist
+    cidr_blocks = ["0.0.0.0/0"] # add given IP here to whitelist
   }
 
   egress {
@@ -26,7 +30,6 @@ resource "aws_security_group" "my-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
 
 resource "aws_instance" "mirae_test" {
   ami           = "ami-0b9064170e32bde34"
@@ -57,8 +60,6 @@ sudo docker run -d --rm -P mockserver/mockserver
 EOF
 }
 
-
-
 resource "aws_iam_role" "ec2_role" {
   name = "ec2_role"
 
@@ -82,7 +83,6 @@ EOF
       tag-key = "tag-value"
   }
 }
-
 
 resource "aws_iam_role_policy" "ec2_policy" {
   name = "ec2_policy"
@@ -109,8 +109,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = "${aws_iam_role.ec2_role.name}"
 }
 
-
-
+# ######### S3 BUCKET ######### 
 
 resource "aws_s3_bucket" "mirae_bucket" {
   bucket = "doctolib-bucket"
